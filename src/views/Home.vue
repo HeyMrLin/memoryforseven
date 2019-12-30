@@ -1,19 +1,39 @@
 <template>
   <div class="home">
-    <canvas id="c" :width="width + 'px'" :height="height + 'px'"></canvas>
-    <input type="password" class="pwd">
+    <canvas id="c"
+            :width="width + 'px'"
+            :height="height + 'px'"></canvas>
+    <div class="container">
+      <div class="text"
+           id="text"
+           v-if="content">
+        <div id="content"></div>
+      </div>
+      <input v-model="pwd"
+             type="password"
+             @keyup.enter="skip"
+             :class="{'show-input': input}"
+             v-if="input"
+             class="pwd">
+      <span class="error"></span>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 /* eslint-disable */
+import Typed from 'typed.js';
 export default {
   name: "home",
   data() {
     return {
       width: "",
-      height: ""
+      height: "",
+      content: false,
+      input: false,
+      pwd: "",
+      errorTyped: null,
     };
   },
   methods: {
@@ -60,7 +80,7 @@ export default {
         ) {
           all_element.push(new ready_run());
         }
-        all_element.map(function(line) {
+        all_element.map(function (line) {
           line.to_step();
         });
       }
@@ -121,7 +141,7 @@ export default {
         ctx.bezierCurveTo(x + 10 * z, y - 15 * z, x, y - 3 * z, x, y);
       }
       ready_run.prototype = {
-        to_reset: function() {
+        to_reset: function () {
           let t = this;
           t.x = find_random(0, w);
           t.y = find_random(0, h);
@@ -144,7 +164,7 @@ export default {
           );
           t.color = "hsl(" + style_color + ",100%," + t.light + "%)";
         },
-        to_step: function() {
+        to_step: function () {
           let t = this;
           t.opacity -= t.opacity_change;
           t.size += t.size_change;
@@ -172,7 +192,7 @@ export default {
         canvas.width = w;
         canvas.height = h;
       }
-      $(window).resize(function() {
+      $(window).resize(function () {
         window_resize();
       });
 
@@ -183,21 +203,103 @@ export default {
 
       start();
     },
+    typedText() {
+      let options = {
+        strings: ['小何', '小小苗', '傻猪猪^1000，在小米', '傻猪猪，在下面', '傻猪猪，在下面输入你的生日，再按回车....'],
+        typeSpeed: 100,
+        backSpeed: 200,
+        onComplete: () => {
+          this.input = true;
+        }
+      };
+      let typed = new Typed('#content', options);
+      typed.onStop = () => {
+        this.input = true;
+      }
+    },
+    skip() {
+      this.$router.push({ name: 'memory', params: { id: this.pwd } })
+    },
+    pwdError() {
+      let options = {
+        strings: ['错了，傻猪猪～'],
+        typeSpeed: 100,
+      };
+      this.errorTyped = new Typed('.error', options);
+    },
   },
   mounted() {
+    this.$router.push({ name: 'memory', params: { id: this.pwd } })
     this.draw();
+    setTimeout(() => {
+      this.content = true;
+      this.$nextTick(() => {
+        this.typedText();
+      })
+    }, 1000);
+  },
+  watch: {
+    pwd(v) {
+      if(!v) {
+        this.errorTyped ? this.errorTyped.destroy() : '';
+      }
+    },
+  },
+  beforeRouteLeave(to, from, next) {
+    next();
+    if (this.pwd !== '19920223') {
+      this.pwdError();
+      return false;
+    } else {
+      next();
+    }
   },
   components: {}
 };
 </script>
 <style scoped lang="scss">
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
 .home {
+  width: 100%;
+  height: 100%;
   position: relative;
-  .pwd {
+  .container {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 40%;
     transform: translate(-50%, -50%);
+    width: 360px;
+    height: 100px;
+    #content {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .pwd {
+      border: none;
+      width: 320px;
+      height: 36px;
+      line-height: 36px;
+      border-radius: 10px;
+      outline: none;
+      padding: 0 10px;
+      display: block;
+    }
+    .show-input {
+      animation: show 3s;
+    }
+    .error {
+      margin-top: 10px;
+      font-size: 14px;
+      display: inline-block;
+      color: #e6720c;
+    }
   }
 }
 </style>
