@@ -280,6 +280,7 @@ export default {
     #content {
       display: inline-block;
       margin-bottom: 20px;
+      font-family: 'xlo';
     }
     .pwd {
       border: none;

@@ -1,12 +1,17 @@
 <template>
   <div class="memory">
     <div id="pop"></div>
-    <div class="content">
+    <div class="content" v-show="show_text">
+      <div class="timer">我们已经在一起{{time}}了</div>
       <div class="words-wrap">
         <span class="words"></span>
       </div>
     </div>
-    <div class="footer"></div>
+    <div class="footer" v-show="show_text"></div>
+    <div class="tip">
+      <img src="../assets/dialog.png">
+    </div>
+    <audio id="music" src="../assets/music/告白气球.mp3" preload loop></audio>
   </div>
 </template>
 <script>
@@ -17,7 +22,10 @@ const rough = new roughs();
 export default {
   name: 'Memory',
   data() {
-    return {};
+    return {
+      time: null,
+      show_text: false,
+    };
   },
   methods: {
     createdPop() {
@@ -162,13 +170,38 @@ export default {
       };
       let typed = new Typed('.words', options);
     },
+    toNow() {
+      let start = this.$moment(new Date('2013', '0', '09', '0', '20', '00'));
+      let now = this.$moment(new Date());
+      let diff_days = now.diff(start, 'days');
+      let diff_hours = now.diff(start, 'hours');
+      let diff_minutes = now.diff(start, 'minutes');
+      let diff_seconds = now.diff(start, 'seconds');
+      let hours = diff_hours - diff_days * 24;
+      let minutes = diff_minutes - diff_days * 24 * 60 - hours * 60;
+      let seconds = diff_seconds - diff_days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60;
+      return `${diff_days}天${hours}小时${minutes}分钟${seconds}秒`;
+    },
+    computedTime() {
+      this.time = this.toNow();
+      let timer = setTimeout(() => {
+        this.time = this.toNow();
+        clearTimeout(timer);
+        this.computedTime();
+      }, 1000);
+    },
+    playMusic() {
+      let m = document.getElementById('music');
+      m.play();
+    },
   },
   created() {
-    this.createdPop();
+    this.computedTime();
+    // this.createdPop();
     this.$nextTick(() => {
       this.createdWords();
+      this.playMusic();
     });
-    // console.log(this.$route);
     if (this.$route.params.id !== '19920223') {
       // this.$router.push({ name: 'home' });
     }
@@ -181,6 +214,7 @@ export default {
   width: 100%;
   height: 100%;
   .content {
+    font-family: 'xlo';
     position: absolute;
     left: 50%;
     top: 46%;
@@ -191,22 +225,37 @@ export default {
     border-radius: 20px;
     background-color: rgba($color: #fff, $alpha: .9);
     .words-wrap {
-      padding: 10px;
+      padding: 20px;
+      text-indent:2em;
       .words {
-        text-indent:2em;
         font-size: 18px;
       }
+    }
+    .timer {
+      text-align: right;
+      margin: 10px 30px 0 0;
+      font-size: 18px;
+      color: #d2963c;
     }
   }
   .footer {
     position: absolute;
     left: 0;
-    top: 3px;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../assets/footer.png');
-    background-position: 50% 100%;
+    // background-image: url('../assets/footer.png');
+    background-position: 50% 101%;
     background-repeat: no-repeat;
+  }
+  .tip {
+    width: 30%;
+    height: 40%;
+    margin: 0 auto;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>

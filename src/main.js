@@ -1,9 +1,11 @@
 import Vue from 'vue';
+import moment from 'moment';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import '@/assets/wmgwdw';
 
+moment.locale('zh-cn');
+Vue.prototype.$moment = moment;
 Vue.config.productionTip = false;
 
 new Vue({
