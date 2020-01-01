@@ -229,7 +229,7 @@ export default {
     },
   },
   mounted() {
-    this.$router.push({ name: 'memory', params: { id: this.pwd } })
+    // this.$router.push({ name: 'memory', params: { id: this.pwd } })
     this.draw();
     setTimeout(() => {
       this.content = true;
@@ -246,7 +246,7 @@ export default {
     },
   },
   beforeRouteLeave(to, from, next) {
-    next();
+    // next();
     if (this.pwd !== '19920223') {
       this.pwdError();
       return false;
@@ -275,8 +275,9 @@ export default {
     left: 50%;
     top: 40%;
     transform: translate(-50%, -50%);
-    width: 360px;
+    width: 480px;
     height: 100px;
+    font-size: 24px;
     #content {
       display: inline-block;
       margin-bottom: 20px;
@@ -284,22 +285,25 @@ export default {
     }
     .pwd {
       border: none;
-      width: 320px;
+      // width: 320px;
+      width: 100%;
       height: 36px;
       line-height: 36px;
       border-radius: 10px;
       outline: none;
       padding: 0 10px;
       display: block;
+      text-align: center;
     }
     .show-input {
       animation: show 3s;
     }
     .error {
       margin-top: 10px;
-      font-size: 14px;
+      // font-size: 14px;
       display: inline-block;
       color: #e6720c;
+      font-family: 'xlo';
     }
   }
 }

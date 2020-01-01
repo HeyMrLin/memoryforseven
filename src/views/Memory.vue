@@ -1,17 +1,38 @@
 <template>
   <div class="memory">
     <div id="pop"></div>
-    <div class="content" v-show="show_text">
+    <div class="content"
+         :class="show_text ? 'show' : 'hide'">
       <div class="timer">我们已经在一起{{time}}了</div>
       <div class="words-wrap">
         <span class="words"></span>
       </div>
     </div>
-    <div class="footer" v-show="show_text"></div>
-    <div class="tip">
+    <div class="footer"
+         :class="show_text ? 'show' : 'hide'"></div>
+    <div class="tip"
+         :class="{'hide' : tip, 'show-tip' : show_tip}"
+         v-if="destroy_tip">
+      <div class="tip-pos">
+        <div class="tip-text">
+          <div class="tip-content">
+            <p class="content-text"
+               ref="text">戴上耳机吧，给你点首《告白气球》</p>
+          </div>
+          <p class="tip-btn-list">
+            <span class="tip-btn"
+                  @click="adorn('n')">不戴</span>
+            <span class="tip-btn"
+                  @click="adorn('y')">戴上了</span>
+          </p>
+        </div>
+      </div>
       <img src="../assets/dialog.png">
     </div>
-    <audio id="music" src="../assets/music/告白气球.mp3" preload loop></audio>
+    <audio id="music"
+           src="../assets/music/告白气球.mp3"
+           preload
+           loop></audio>
   </div>
 </template>
 <script>
@@ -25,6 +46,9 @@ export default {
     return {
       time: null,
       show_text: false,
+      tip: false,
+      destroy_tip: true,
+      show_tip: false,
     };
   },
   methods: {
@@ -167,6 +191,7 @@ export default {
     createdWords() {
       const options = {
         strings: ['你好，放哪放呢我i哦啊发我i哦啊发我i哦啊发我i哦啊发我i哦啊发我i哦啊发if你我阿福年份i额外按分外分玩废我啊分为奥芬懊恼分啊佛乃佛额外'],
+        typeSpeed: 40,
       };
       let typed = new Typed('.words', options);
     },
@@ -194,17 +219,45 @@ export default {
       let m = document.getElementById('music');
       m.play();
     },
+    hideTip(music = false) {
+      this.tip = true;
+      setTimeout(() => {
+        this.destroy_tip = false;
+        this.showContent();
+        music ? this.playMusic() : '';
+      }, 1000);
+    },
+    showContent() {
+      this.show_text = true;
+      setTimeout(() => {
+        this.createdWords();
+      }, 1000)
+    },
+    adorn(type = 'y') {
+      if (type === 'y') {
+        this.hideTip(true);
+      } else {
+        this.$refs.text.innerHTML = '';
+        const options = {
+          strings: ['那等会再听～'],
+          typeSpeed: 60,
+        };
+        let typed = new Typed('.content-text', options);
+        setTimeout(() => {
+          this.hideTip();
+        }, options.strings[0].length * options.typeSpeed + 1600);
+      }
+    },
   },
   created() {
     this.computedTime();
-    // this.createdPop();
-    this.$nextTick(() => {
-      this.createdWords();
-      this.playMusic();
-    });
+    this.createdPop();
     if (this.$route.params.id !== '19920223') {
-      // this.$router.push({ name: 'home' });
+      this.$router.push({ name: 'home' });
     }
+  },
+  mounted() {
+    this.show_tip = true;
   },
 };
 </script>
@@ -214,19 +267,19 @@ export default {
   width: 100%;
   height: 100%;
   .content {
-    font-family: 'xlo';
+    font-family: "xlo";
     position: absolute;
     left: 50%;
     top: 46%;
     transform: translate(-50%, -50%);
     width: 60%;
     height: 80%;
-    border:4px solid #000;
+    border: 4px solid #000;
     border-radius: 20px;
-    background-color: rgba($color: #fff, $alpha: .9);
+    background-color: rgba($color: #fff, $alpha: 0.9);
     .words-wrap {
       padding: 20px;
-      text-indent:2em;
+      text-indent: 2em;
       .words {
         font-size: 18px;
       }
@@ -244,18 +297,65 @@ export default {
     top: 0;
     width: 100%;
     height: 100%;
-    // background-image: url('../assets/footer.png');
+    background-image: url("../assets/footer.png");
     background-position: 50% 101%;
     background-repeat: no-repeat;
   }
   .tip {
-    width: 30%;
-    height: 40%;
+    width: 400px;
+    height: 321px;
     margin: 0 auto;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    .content-text {
+      display: inline-block;
+    }
+    .tip-pos {
+      position: relative;
+    }
     img {
       width: 100%;
       height: 100%;
     }
+    .tip-text {
+      font-family: "xlo";
+      position: absolute;
+      left: 46px;
+      top: 90px;
+      width: 350px;
+      .tip-content {
+        font-size: 26px;
+        height: 62px;
+      }
+      .tip-btn-list {
+        text-align: right;
+        margin: 14px 55px 0 0px;
+      }
+      .tip-btn {
+        font-size: 22px;
+        text-align: right;
+        cursor: pointer;
+        text-shadow: 2px 2px 2px rgba($color: #000, $alpha: 0.3);
+      }
+      .tip-btn:last-child {
+        margin-left: 26px;
+      }
+    }
+  }
+  .show-tip {
+    opacity: 1;
+    transition: opacity 1s;
+  }
+  .hide {
+    opacity: 0;
+    transition: opacity 1s;
+  }
+  .show {
+    opacity: 1;
+    transition: opacity 2s;
   }
 }
 </style>
