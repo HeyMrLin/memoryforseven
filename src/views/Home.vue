@@ -14,7 +14,10 @@
              @keyup.enter="skip"
              :class="{'show-input': input}"
              v-if="input"
+             @focus="showUnderline(true)"
+             @blur="showUnderline(false)"
              class="pwd">
+      <span class="underline" :class="{'show-underline' : show_underline}"></span>
       <span class="error"></span>
     </div>
   </div>
@@ -34,6 +37,7 @@ export default {
       input: false,
       pwd: "",
       errorTyped: null,
+      show_underline: false,
     };
   },
   methods: {
@@ -205,9 +209,9 @@ export default {
     },
     typedText() {
       let options = {
-        strings: ['小何', '小小苗', '傻猪猪^1000，在小米', '傻猪猪，在下面', '傻猪猪，在下面输入你的生日，再按回车....'],
-        typeSpeed: 100,
-        backSpeed: 200,
+        strings: ['小何', '小小苗', '傻猪猪^500，在小米', '傻猪猪，在下面', '傻猪猪，在下面输入你的生日，再按回车....'],
+        typeSpeed: 10,
+        backSpeed: 20,
         onComplete: () => {
           this.input = true;
         }
@@ -223,9 +227,12 @@ export default {
     pwdError() {
       let options = {
         strings: ['错了，傻猪猪～'],
-        typeSpeed: 100,
+        typeSpeed: 10,
       };
       this.errorTyped = new Typed('.error', options);
+    },
+    showUnderline(b) {
+      this.show_underline = b;
     },
   },
   mounted() {
@@ -285,15 +292,32 @@ export default {
     }
     .pwd {
       border: none;
+      border-bottom: 2px solid rgba(130, 153, 153, 0.76);
       // width: 320px;
       width: 100%;
       height: 36px;
       line-height: 36px;
-      border-radius: 10px;
+      // border-radius: 10px;
+      background-color: transparent;
       outline: none;
       padding: 0 10px;
       display: block;
       text-align: center;
+      position: relative;
+    }
+    .underline {
+      position: absolute;
+      width: 0px;
+      height: 2px;
+      left: 52%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      background-color: rgb(12, 189, 233);
+      transition: width .6s cubic-bezier(0, 0, 0, 1.07);
+    }
+    .show-underline {
+      width: 500px;
+      transition: width .6s cubic-bezier(0, 0, 0, 1.07);
     }
     .show-input {
       animation: show 3s;
