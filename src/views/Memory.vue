@@ -33,6 +33,7 @@
            src="../assets/music/告白气球.mp3"
            preload
            loop></audio>
+    <div class="pic"></div>
   </div>
 </template>
 <script>
@@ -223,7 +224,7 @@ export default {
       this.tip = true;
       setTimeout(() => {
         this.destroy_tip = false;
-        this.showContent();
+        // this.showContent();
         music ? this.playMusic() : '';
       }, 1000);
     },
@@ -251,7 +252,7 @@ export default {
   },
   created() {
     this.computedTime();
-    this.createdPop();
+    // this.createdPop();
     if (this.$route.params.id !== '19920223') {
       this.$router.push({ name: 'home' });
     }
@@ -264,6 +265,7 @@ export default {
 <style scoped lang="scss">
 .memory {
   position: relative;
+  overflow: hidden;
   width: 100%;
   height: 100%;
   .content {
@@ -356,6 +358,21 @@ export default {
   .show {
     opacity: 1;
     transition: opacity 2s;
+  }
+  .pic {
+    width: 200px;
+    height: 300px;
+    background-color: aqua;
+    position: absolute;
+    right: -180px;
+    top: 40%;
+    transform-origin: top left;
+    transform: rotate(-12deg);
+    transition: transform .6s;
+  }
+  .pic:hover {
+    transform: translateX(-180px);
+    transition: transform .6s;
   }
 }
 </style>
