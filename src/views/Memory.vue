@@ -33,7 +33,9 @@
            src="../assets/music/告白气球.mp3"
            preload
            loop></audio>
-    <div class="pic"></div>
+    <div class="pic">
+      <img src="https://linwordpressblog.oss-cn-shenzhen.aliyuncs.com/IMG_0169.jpeg">
+    </div>
   </div>
 </template>
 <script>
@@ -360,18 +362,22 @@ export default {
     transition: opacity 2s;
   }
   .pic {
-    width: 200px;
-    height: 300px;
+    width: 240px;
+    height: 320px;
     background-color: aqua;
     position: absolute;
-    right: -180px;
+    right: -220px;
     top: 40%;
     transform-origin: top left;
     transform: rotate(-12deg);
     transition: transform .6s;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
   .pic:hover {
-    transform: translateX(-180px);
+    transform: translateX(-220px);
     transition: transform .6s;
   }
 }
