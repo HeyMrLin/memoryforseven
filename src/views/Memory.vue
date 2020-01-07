@@ -193,8 +193,11 @@ export default {
     },
     createdWords() {
       const options = {
-        strings: ['你好，放哪放呢我i哦啊发我i哦啊发我i哦啊发我i哦啊发我i哦啊发我i哦啊发if你我阿福年份i额外按分外分玩废我啊分为奥芬懊恼分啊佛乃佛额外'],
-        typeSpeed: 40,
+        strings: ['<span class="section">转眼，这已经是我们在一起的第七个年头了，是不是感觉礼物越送越简陋了😊，哈哈哈哈。此时此刻你在煎你的蛋，我在桌旁敲下这些字，我知道，等会就会有我吃的😘。</span><span class="section">记得在刚在一起的那个冬天，我们经常顶着寒风去神农城玩，虽然气温很低，但是我心里却是暖的，一点都不觉得冷。我们一起去过很多地方，去衡阳爬山，去凤凰坐船，去长沙跨年。再到后来我们在广州、深圳分隔两地的时候，坐很久的火车去看你也不觉得累，现在回想起来都觉得是一段超级美好的回忆。</span><span class="section">小苗，感谢你这些年的陪伴，以及包容，我从在校园里的不谙世事，到现在慢慢懂得很多为人处事的道理；而你也从那时的青涩少女，变成了如今知性成熟的大姑娘。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。</span>这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。'],
+        typeSpeed: 1,
+        contentType: 'html',
+        autoInsertCss: true,
+        showCursor: false,
       };
       let typed = new Typed('.words', options);
     },
@@ -226,7 +229,7 @@ export default {
       this.tip = true;
       setTimeout(() => {
         this.destroy_tip = false;
-        // this.showContent();
+        this.showContent();
         music ? this.playMusic() : '';
       }, 1000);
     },
@@ -254,7 +257,7 @@ export default {
   },
   created() {
     this.computedTime();
-    // this.createdPop();
+    this.createdPop();
     if (this.$route.params.id !== '19920223') {
       this.$router.push({ name: 'home' });
     }
@@ -283,10 +286,15 @@ export default {
     background-color: rgba($color: #fff, $alpha: 0.9);
     .words-wrap {
       padding: 20px;
-      text-indent: 2em;
       .words {
-        font-size: 18px;
+        font-size: 20px;
       }
+    }
+    /deep/
+    .section {
+      text-indent: 2em;
+      display: block;
+      line-height: 36px;
     }
     .timer {
       text-align: right;
