@@ -4,7 +4,7 @@
             :width="width + 'px'"
             :height="height + 'px'"></canvas>
     <div class="container"
-         :class="_isMobile ? 'container-mobile' : 'container'">
+         :class="_isMobile ? 'container-mobile' : 'container-pc'">
       <div class="text"
            id="text"
            v-if="content">
