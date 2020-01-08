@@ -216,7 +216,7 @@ export default {
     },
     typedText() {
       let options = {
-        strings: ['小何', '小小苗', '傻猪猪^500，在小米', '傻猪猪，在下面', '傻猪猪，在下面输入你的生日，再按回车....'],
+        strings: ['小何', '小小苗', '傻猪猪^500，在小米', '傻猪猪，在下面', '傻猪猪，在下面输入你的生日，^500再按回车....'],
         typeSpeed: 40,
         backSpeed: 60,
         showCursor: false,
@@ -235,7 +235,7 @@ export default {
     pwdError() {
       let options = {
         strings: ['错了，傻猪猪～'],
-        typeSpeed: 10,
+        typeSpeed: 40,
         showCursor: false,
       };
       this.errorTyped = new Typed('.error', options);

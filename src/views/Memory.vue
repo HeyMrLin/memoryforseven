@@ -6,9 +6,9 @@
          'hide': !show_text,
          'content-pc': !_isMobile, 'content-mobile': _isMobile}">
       <el-scrollbar>
-        <!-- <div class="timer">我们已经在一起{{time}}了</div> -->
+        <div class="timer">我们已经在一起{{time}}了</div>
         <div class="words-wrap">
-          <span class="words" :class="_isMobile ? 'font-size-14' : 'font-size-20'"></span>
+          <span class="words" :class="_isMobile ? 'words-mobile' : 'words-pc'"></span>
         </div>
       </el-scrollbar>
     </div>
@@ -41,7 +41,7 @@
            preload
            loop></audio>
     <div class="pic" :class="{'pic-pc': !_isMobile, 'pic-mobile': _isMobile}">
-      <img src="https://linwordpressblog.oss-cn-shenzhen.aliyuncs.com/IMG_0169.jpeg">
+      <img src="https://linwordpressblog.oss-cn-shenzhen.aliyuncs.com/blog/IMG_7062.jpeg">
     </div>
   </div>
 </template>
@@ -207,9 +207,13 @@ export default {
     createdWords() {
       const strings_style = this._isMobile ? 'section-mobile' : 'section-pc'
       const options = {
-        strings: [`<span class="${strings_style} section">转眼，这已经是我们在一起的第七个年头了，是不是感觉礼物越送越简陋了😊，哈哈哈哈。此时此刻你在煎你的蛋，我在桌旁敲下这些字，我知道，等会就会有我吃的😘。</span><span class="${strings_style} section">记得在刚在一起的那个冬天，我们经常顶着寒风去神农城玩，虽然气温很低，但是我心里却是暖的，一点都不觉得冷。我们一起去过很多地方，去衡阳爬山，去凤凰坐船，去长沙跨年。再到后来我们在广州、深圳分隔两地的时候，坐很久的火车去看你也不觉得累，现在回想起来都觉得是一段超级美好的回忆。</span><span class="${strings_style} section">小苗，感谢你这些年的陪伴，以及包容，我从在校园里的不谙世事，到现在慢慢懂得很多为人处事的道理；而你也从那时的青涩少女，变成了如今知性成熟的大姑娘。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。</span>`],
-        // strings: ['<span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span>'],
-        typeSpeed: 1,
+        strings: [`<span>傻苗：</span>
+                   <span class="${strings_style} section">转眼，这已经是我们在一起的第七个年头了，是不是感觉礼物越送越简陋了😊，哈哈哈哈。此时此刻你在煎你明天吃的蛋，我在桌旁敲下这些字，我知道，等会就会有我吃的😘。</span>
+                   <span class="${strings_style} section">记得在刚在一起的那个冬天，我们经常顶着寒风去神农城玩，虽然气温很低，但是我心里却是暖的，一点都不觉得冷。我们一起去过很多地方，去衡阳爬山，去凤凰坐船，去长沙跨年。再到后来我们在广州、深圳分隔两地的时候，坐很久的火车去看你也不觉得累，现在回想起来都觉得是一段超级美好的回忆。</span>
+                   <span class="${strings_style} section">小苗，感谢你这些年的陪伴，以及包容。我从在校园里的不谙世事，到现在慢慢懂得很多为人处事的道理；而你也从那时的青涩少女，变成了如今知性成熟的大姑娘。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。</span>
+                   <span class="${strings_style} section">祝我们七周年快乐!爱你!</span>
+                   <p class="sign">不会煽情的老熹</p>`],
+        typeSpeed: 80,
         contentType: 'html',
         autoInsertCss: true,
         showCursor: false,
@@ -294,7 +298,6 @@ export default {
     left: 50%;
     top: 46%;
     transform: translate(-50%, -50%);
-    
     height: 80%;
     border: 4px solid #000;
     border-radius: 20px;
@@ -312,6 +315,22 @@ export default {
     }
     .words-wrap {
       padding: 20px;
+      .words-pc {
+        font-size: 20px;
+      }
+      .words-mobile {
+        font-size: 14px;
+      }
+      @media screen and (min-width: 1280px) {
+        .words-pc {
+          font-size: 24px;
+        }
+      }
+      @media screen and (min-width: 1680px) {
+        .words-pc {
+          font-size: 26px;
+        }
+      }
     }
     /deep/
     .section {
@@ -322,15 +341,44 @@ export default {
     .section-pc {
       line-height: 36px;
     }
+    @media screen and (min-width: 1280px) {
+      /deep/
+      .section-pc {
+        line-height: 42px;
+      }
+    }
+    @media screen and (min-width: 1680px) {
+      /deep/
+      .section-pc {
+        line-height: 46px;
+      }
+    }
     /deep/
     .section-mobile {
       line-height: 24px;
+    }
+    /deep/
+    .sign {
+      text-align: right;
+      margin: 14px 10px 0 0;
     }
     .timer {
       text-align: right;
       margin: 10px 30px 0 0;
       font-size: 18px;
       color: #d2963c;
+    }
+    @media screen and (min-width: 1280px) {
+      /deep/
+      .timer {
+        font-size: 20px;
+      }
+    }
+    @media screen and (min-width: 1680px) {
+      /deep/
+      .timer {
+        font-size: 24px;
+      }
     }
   }
   .content-pc {
@@ -346,7 +394,6 @@ export default {
     width: 100%;
     height: 100%;
     background-image: url("../assets/footer.png");
-    
     background-repeat: no-repeat;
   }
   .footer-mobile {
@@ -355,7 +402,7 @@ export default {
   }
   .footer-pc {
     background-position: 50% 101%;
-    background-size: 80%;
+    // background-size: 80%;
   }
   .tip {
     margin: 0 auto;
