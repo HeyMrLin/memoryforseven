@@ -2,19 +2,26 @@
   <div class="memory">
     <div id="pop"></div>
     <div class="content"
-         :class="show_text ? 'show' : 'hide'">
-      <div class="timer">我们已经在一起{{time}}了</div>
-      <div class="words-wrap">
-        <span class="words"></span>
-      </div>
+         :class="{'show': show_text,
+         'hide': !show_text,
+         'content-pc': !_isMobile, 'content-mobile': _isMobile}">
+      <el-scrollbar>
+        <!-- <div class="timer">我们已经在一起{{time}}了</div> -->
+        <div class="words-wrap">
+          <span class="words" :class="_isMobile ? 'font-size-14' : 'font-size-20'"></span>
+        </div>
+      </el-scrollbar>
     </div>
     <div class="footer"
-         :class="show_text ? 'show' : 'hide'"></div>
+         :class="{'show': show_text,
+         'hide': !show_text,
+         'footer-pc': !_isMobile,'footer-mobile': _isMobile}"></div>
     <div class="tip"
-         :class="{'hide' : tip, 'show-tip' : show_tip}"
+         :class="{'hide' : tip, 'show-tip' : show_tip,
+         'tip-size': !_isMobile, 'tip-size-mobile': _isMobile}"
          v-if="destroy_tip">
       <div class="tip-pos">
-        <div class="tip-text">
+        <div class="tip-text" :class="_isMobile ? 'tip-text-mobile' : 'tip-text-pc'">
           <div class="tip-content">
             <p class="content-text"
                ref="text">戴上耳机吧，给你点首《告白气球》</p>
@@ -33,7 +40,7 @@
            src="../assets/music/告白气球.mp3"
            preload
            loop></audio>
-    <div class="pic">
+    <div class="pic" :class="{'pic-pc': !_isMobile, 'pic-mobile': _isMobile}">
       <img src="https://linwordpressblog.oss-cn-shenzhen.aliyuncs.com/IMG_0169.jpeg">
     </div>
   </div>
@@ -53,6 +60,12 @@ export default {
       destroy_tip: true,
       show_tip: false,
     };
+  },
+  computed: {
+    _isMobile(){
+      let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+      return flag;
+    },
   },
   methods: {
     createdPop() {
@@ -166,7 +179,7 @@ export default {
           pop.appendChild(canvas);
         })
 
-        var particleCount = 50;
+        var particleCount = _this._isMobile ? 20 : 50;
         while (particleCount--) {
           scope.particles.push(Particle({
             pos: {
@@ -192,8 +205,10 @@ export default {
       }
     },
     createdWords() {
+      const strings_style = this._isMobile ? 'section-mobile' : 'section-pc'
       const options = {
-        strings: ['<span class="section">转眼，这已经是我们在一起的第七个年头了，是不是感觉礼物越送越简陋了😊，哈哈哈哈。此时此刻你在煎你的蛋，我在桌旁敲下这些字，我知道，等会就会有我吃的😘。</span><span class="section">记得在刚在一起的那个冬天，我们经常顶着寒风去神农城玩，虽然气温很低，但是我心里却是暖的，一点都不觉得冷。我们一起去过很多地方，去衡阳爬山，去凤凰坐船，去长沙跨年。再到后来我们在广州、深圳分隔两地的时候，坐很久的火车去看你也不觉得累，现在回想起来都觉得是一段超级美好的回忆。</span><span class="section">小苗，感谢你这些年的陪伴，以及包容，我从在校园里的不谙世事，到现在慢慢懂得很多为人处事的道理；而你也从那时的青涩少女，变成了如今知性成熟的大姑娘。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。</span>这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。'],
+        strings: [`<span class="${strings_style} section">转眼，这已经是我们在一起的第七个年头了，是不是感觉礼物越送越简陋了😊，哈哈哈哈。此时此刻你在煎你的蛋，我在桌旁敲下这些字，我知道，等会就会有我吃的😘。</span><span class="${strings_style} section">记得在刚在一起的那个冬天，我们经常顶着寒风去神农城玩，虽然气温很低，但是我心里却是暖的，一点都不觉得冷。我们一起去过很多地方，去衡阳爬山，去凤凰坐船，去长沙跨年。再到后来我们在广州、深圳分隔两地的时候，坐很久的火车去看你也不觉得累，现在回想起来都觉得是一段超级美好的回忆。</span><span class="${strings_style} section">小苗，感谢你这些年的陪伴，以及包容，我从在校园里的不谙世事，到现在慢慢懂得很多为人处事的道理；而你也从那时的青涩少女，变成了如今知性成熟的大姑娘。这些年我们一起成长，一起面对，我相信未来的我们一定会变得更好。</span>`],
+        // strings: ['<span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span><span class="section">这个权力是什么意思呢，它代表就算其他四大常任理事国及全球所有小国均同意某一件事，只要有一个常任理事国投下了反对票，那么这件事就通不过，这个权力之大，堪称政治霸权。</span>'],
         typeSpeed: 1,
         contentType: 'html',
         autoInsertCss: true,
@@ -279,22 +294,37 @@ export default {
     left: 50%;
     top: 46%;
     transform: translate(-50%, -50%);
-    width: 60%;
+    
     height: 80%;
     border: 4px solid #000;
     border-radius: 20px;
     background-color: rgba($color: #fff, $alpha: 0.9);
+    /deep/
+    .el-scrollbar__view {
+      max-height: 100%;
+    }
+    .el-scrollbar {
+      height: 100%;
+    }
+    /deep/
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
     .words-wrap {
       padding: 20px;
-      .words {
-        font-size: 20px;
-      }
     }
     /deep/
     .section {
       text-indent: 2em;
       display: block;
+    }
+    /deep/
+    .section-pc {
       line-height: 36px;
+    }
+    /deep/
+    .section-mobile {
+      line-height: 24px;
     }
     .timer {
       text-align: right;
@@ -303,6 +333,12 @@ export default {
       color: #d2963c;
     }
   }
+  .content-pc {
+    width: 60%;
+  }
+  .content-mobile {
+    width: 90%;
+  }
   .footer {
     position: absolute;
     left: 0;
@@ -310,12 +346,18 @@ export default {
     width: 100%;
     height: 100%;
     background-image: url("../assets/footer.png");
-    background-position: 50% 101%;
+    
     background-repeat: no-repeat;
   }
+  .footer-mobile {
+    background-position: 50% 98%;
+    background-size: 86%;
+  }
+  .footer-pc {
+    background-position: 50% 101%;
+    background-size: 80%;
+  }
   .tip {
-    width: 400px;
-    height: 321px;
     margin: 0 auto;
     position: absolute;
     top: 30%;
@@ -335,19 +377,11 @@ export default {
     .tip-text {
       font-family: "xlo";
       position: absolute;
-      left: 46px;
-      top: 90px;
-      width: 350px;
-      .tip-content {
-        font-size: 26px;
-        height: 62px;
-      }
+      
       .tip-btn-list {
         text-align: right;
-        margin: 14px 55px 0 0px;
       }
       .tip-btn {
-        font-size: 22px;
         text-align: right;
         cursor: pointer;
         text-shadow: 2px 2px 2px rgba($color: #000, $alpha: 0.3);
@@ -356,6 +390,44 @@ export default {
         margin-left: 26px;
       }
     }
+    .tip-text-pc {
+      left: 46px;
+      top: 90px;
+      width: 350px;
+      .tip-content {
+        font-size: 26px;
+        height: 62px;
+      }
+      .tip-btn-list {
+        margin: 14px 55px 0 0px;
+      }
+      .tip-btn {
+        font-size: 22px;
+      }
+    }
+    .tip-text-mobile {
+      left: 46px;
+      top: 72px;
+      width: 246px;
+      .tip-content {
+        font-size: 18px;
+        height: 52px;
+      }
+      .tip-btn-list {
+        margin: 0px 55px 0 0px;
+      }
+      .tip-btn {
+        font-size: 16px;
+      }
+    }
+  }
+  .tip-size {
+    width: 400px;
+    height: 321px;
+  }
+  .tip-size-mobile {
+    width: 300px;
+    height: 241px;
   }
   .show-tip {
     opacity: 1;
@@ -370,11 +442,7 @@ export default {
     transition: opacity 2s;
   }
   .pic {
-    width: 240px;
-    height: 320px;
-    background-color: aqua;
     position: absolute;
-    right: -220px;
     top: 40%;
     transform-origin: top left;
     transform: rotate(-12deg);
@@ -384,9 +452,32 @@ export default {
       height: 100%;
     }
   }
-  .pic:hover {
+  .pic-pc {
+    width: 240px;
+    height: 320px;
+    right: -220px;
+  }
+  .pic-mobile {
+    width: 120px;
+    height: 160px;
+    right: -110px;
+  }
+  .pic-pc:hover {
     transform: translateX(-220px);
     transition: transform .6s;
+  }
+  .pic-mobile:hover {
+    transform: translateX(-110px);
+    transition: transform .6s;
+  }
+  .font-size-26 {
+    font-size: 26px;
+  }
+  .font-size-20 {
+    font-size: 20px;
+  }
+  .font-size-14 {
+    font-size: 14px;
   }
 }
 </style>

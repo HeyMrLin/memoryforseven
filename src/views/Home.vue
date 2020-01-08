@@ -3,7 +3,8 @@
     <canvas id="c"
             :width="width + 'px'"
             :height="height + 'px'"></canvas>
-    <div class="container">
+    <div class="container"
+         :class="_isMobile ? 'container-mobile' : 'container'">
       <div class="text"
            id="text"
            v-if="content">
@@ -39,6 +40,12 @@ export default {
       errorTyped: null,
       show_underline: false,
     };
+  },
+  computed: {
+    _isMobile(){
+      let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+      return flag;
+    },
   },
   methods: {
     computeSize() {
@@ -210,8 +217,9 @@ export default {
     typedText() {
       let options = {
         strings: ['小何', '小小苗', '傻猪猪^500，在小米', '傻猪猪，在下面', '傻猪猪，在下面输入你的生日，再按回车....'],
-        typeSpeed: 10,
-        backSpeed: 20,
+        typeSpeed: 40,
+        backSpeed: 60,
+        showCursor: false,
         onComplete: () => {
           this.input = true;
         }
@@ -228,6 +236,7 @@ export default {
       let options = {
         strings: ['错了，傻猪猪～'],
         typeSpeed: 10,
+        showCursor: false,
       };
       this.errorTyped = new Typed('.error', options);
     },
@@ -282,21 +291,17 @@ export default {
     left: 50%;
     top: 40%;
     transform: translate(-50%, -50%);
-    width: 480px;
-    height: 100px;
-    font-size: 24px;
     #content {
       display: inline-block;
       margin-bottom: 20px;
       font-family: 'xlo';
+      text-align: center;
     }
     .pwd {
       border: none;
-      border-bottom: 2px solid rgba(130, 153, 153, 0.76);
+      border-radius: 0;
       // width: 320px;
       width: 100%;
-      height: 36px;
-      line-height: 36px;
       // border-radius: 10px;
       background-color: transparent;
       outline: none;
@@ -308,15 +313,12 @@ export default {
     .underline {
       position: absolute;
       width: 0px;
-      height: 2px;
       left: 52%;
-      bottom: 10px;
       transform: translateX(-50%);
       background-color: rgb(12, 189, 233);
       transition: width .6s cubic-bezier(0, 0, 0, 1.07);
     }
     .show-underline {
-      width: 500px;
       transition: width .6s cubic-bezier(0, 0, 0, 1.07);
     }
     .show-input {
@@ -328,6 +330,50 @@ export default {
       display: inline-block;
       color: #e6720c;
       font-family: 'xlo';
+    }
+  }
+  .container-pc {
+    width: 480px;
+    height: 100px;
+    font-size: 24px;
+    .pwd {
+      height: 36px;
+      line-height: 36px;
+      border-bottom: 2px solid rgba(130, 153, 153, 0.76);
+    }
+    .underline {
+      width: 0px;
+      height: 2px;
+      left: 52%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      background-color: rgb(12, 189, 233);
+      transition: width .6s cubic-bezier(0, 0, 0, 1.07);
+    }
+    .show-underline {
+      width: 500px;
+    }
+  }
+  .container-mobile {
+    width: 280px;
+    height: 100px;
+    font-size: 14px;
+    .pwd {
+      height: 16px;
+      line-height: 16px;
+      border-bottom: 1px solid rgba(130, 153, 153, 0.76);
+    }
+    .underline {
+      width: 0px;
+      height: 1px;
+      left: 53%;
+      bottom: 45px;
+      transform: translateX(-50%);
+      background-color: rgb(12, 189, 233);
+      transition: width .6s cubic-bezier(0, 0, 0, 1.07);
+    }
+    .show-underline {
+      width: 300px;
     }
   }
 }
