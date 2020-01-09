@@ -6,16 +6,14 @@
          'hide': !show_text,
          'content-pc': !_isMobile, 'content-mobile': _isMobile}">
       <el-scrollbar>
-        <div class="timer">我们已经在一起{{time}}了</div>
+        <div class="timer" :class="{'timer-pc': !_isMobile,
+                           'timer-mobile': _isMobile}">我们已经在一起{{time}}了</div>
         <div class="words-wrap">
-          <span class="words" :class="_isMobile ? 'words-mobile' : 'words-pc'"></span>
+          <span class="words" :class="_isMobile ? 'words-mobile' : 'words-pc'">
+          </span>
         </div>
       </el-scrollbar>
     </div>
-    <div class="footer"
-         :class="{'show': show_text,
-         'hide': !show_text,
-         'footer-pc': !_isMobile,'footer-mobile': _isMobile}"></div>
     <div class="tip"
          :class="{'hide' : tip, 'show-tip' : show_tip,
          'tip-size': !_isMobile, 'tip-size-mobile': _isMobile}"
@@ -43,6 +41,10 @@
     <div class="pic" :class="{'pic-pc': !_isMobile, 'pic-mobile': _isMobile}">
       <img src="https://linwordpressblog.oss-cn-shenzhen.aliyuncs.com/blog/IMG_7062.jpeg">
     </div>
+    <div class="footer"
+         :class="{'show': show_text,
+         'hide': !show_text,
+         'footer-pc': !_isMobile,'footer-mobile': _isMobile}"></div>
   </div>
 </template>
 <script>
@@ -59,6 +61,7 @@ export default {
       tip: false,
       destroy_tip: true,
       show_tip: false,
+      watch_scroll: null,
     };
   },
   computed: {
@@ -217,6 +220,14 @@ export default {
         contentType: 'html',
         autoInsertCss: true,
         showCursor: false,
+        onBegin: () => {
+          this.watch_scroll = setInterval(() => {
+            this.handleScroll();
+          }, 500)
+        },
+        onComplete: () => {
+          clearInterval(this.watch_scroll);
+        }
       };
       let typed = new Typed('.words', options);
     },
@@ -273,6 +284,13 @@ export default {
         }, options.strings[0].length * options.typeSpeed + 1600);
       }
     },
+    handleScroll() {
+      let view = document.getElementsByClassName('el-scrollbar__view')[0];
+      let words = document.getElementsByClassName('words-wrap')[0];
+      if (words.offsetHeight > view.offsetHeight) {
+        view.scrollTop = words.offsetHeight;
+      }
+    },
   },
   created() {
     this.computedTime();
@@ -301,17 +319,19 @@ export default {
     height: 80%;
     border: 4px solid #000;
     border-radius: 20px;
-    background-color: rgba($color: #fff, $alpha: 0.9);
+    background-color: rgba($color: #fff, $alpha: 0.6);
     /deep/
     .el-scrollbar__view {
       max-height: 100%;
+      overflow-y: scroll;
+      overflow-x: hidden;
     }
     .el-scrollbar {
       height: 100%;
     }
     /deep/
     .el-scrollbar__wrap {
-      overflow-x: hidden;
+      overflow: hidden;
     }
     .words-wrap {
       padding: 20px;
@@ -323,12 +343,12 @@ export default {
       }
       @media screen and (min-width: 1280px) {
         .words-pc {
-          font-size: 24px;
+          font-size: 26px;
         }
       }
       @media screen and (min-width: 1680px) {
         .words-pc {
-          font-size: 26px;
+          font-size: 28px;
         }
       }
     }
@@ -344,13 +364,13 @@ export default {
     @media screen and (min-width: 1280px) {
       /deep/
       .section-pc {
-        line-height: 42px;
+        line-height: 44px;
       }
     }
     @media screen and (min-width: 1680px) {
       /deep/
       .section-pc {
-        line-height: 46px;
+        line-height: 48px;
       }
     }
     /deep/
@@ -364,9 +384,15 @@ export default {
     }
     .timer {
       text-align: right;
+      color: #d2963c;
+    }
+    .timer-pc {
       margin: 10px 30px 0 0;
       font-size: 18px;
-      color: #d2963c;
+    }
+    .timer-mobile {
+      margin: 10px 0 0 0;
+      font-size: 14px;
     }
     @media screen and (min-width: 1280px) {
       /deep/
@@ -395,6 +421,7 @@ export default {
     height: 100%;
     background-image: url("../assets/footer.png");
     background-repeat: no-repeat;
+    z-index: -1;
   }
   .footer-mobile {
     background-position: 50% 98%;
